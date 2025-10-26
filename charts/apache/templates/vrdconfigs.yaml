@@ -1,0 +1,13 @@
+{{- if .Values.vrdConfigs }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "apache.fullname" . }}-vrdconfigs
+  labels:
+    {{- include "apache.labels" . | nindent 4 }}
+data:
+{{- range $name, $value := .Values.vrdConfigs }}
+  {{- $name | nindent 2 }}: |
+    {{- $value | nindent 4 }}
+{{- end }}
+{{- end }}

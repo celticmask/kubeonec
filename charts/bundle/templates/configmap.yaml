@@ -1,0 +1,16 @@
+{{- if .Values.client.enabled}}
+{{- if .Values.client.netHasp.create}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "kubeonec.fullname" . }}-nethasp
+data:
+  nethasp.ini: |
+    [NH_COMMON]
+    NH_TCPIP = Enabled
+    [NH_TCPIP]
+    NH_SERVER_ADDR = {{ .Values.client.netHasp.serverAddres }}
+    NH_PORT_NUMBER = 475
+    NH_TCPIP_METHOD = UDP
+{{- end }}
+{{- end }}

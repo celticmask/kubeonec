@@ -1,0 +1,46 @@
+{{- if .Values.client.enabled}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "kubeonec.fullname" . }}-client
+  labels:
+    version: " {{- .Values.client.image.tag }}"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: client
+  replicas: {{ .Values.client.replicaCount }}
+  template:
+    metadata:
+      labels:
+        app: client
+    spec:
+      containers:
+      - name: client
+        image: "{{ .Values.client.image.repository }}:{{ .Values.client.image.tag }}"
+        imagePullPolicy: Always
+        #command: ['/startup.sh']
+        # command: ['xstart', 'novnc']
+        ports:
+          - name: novnc
+            containerPort: 80
+            protocol: TCP
+        volumeMounts:
+        - name: {{ include "kubeonec.fullname" . }}-nethasp
+          mountPath: /opt/1cv8/x86_64/conf/nethasp.ini
+          subPath: nethasp.ini
+        env:
+        - name: KUBE_NAMESPACE
+          value: {{ .Values.Namespace }}
+      dnsConfig:
+        searches:
+          - {{ include "kubeonec.fullname" . }}-hs-service.onec.svc.cluster.local
+      volumes:
+        - name: {{ include "kubeonec.fullname" . }}-nethasp
+          configMap:
+            name: {{ include "kubeonec.fullname" . }}-nethasp
+      {{- if .Values.serviceAccount.create}}
+      serviceAccount: {{ include "kubeonec.fullname" . }}-sa
+      {{- end}}
+{{- end }}

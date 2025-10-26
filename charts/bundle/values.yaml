@@ -1,0 +1,62 @@
+# Default values for kubeonec.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+server:
+  enabled: true
+  image:
+    repository: localhost/onec-server
+    pullPolicy: Always
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: 8.3.18.1363
+  replicaCount: 1
+  ports:
+    # Client connection ports
+    workProccesStartPort: 1560
+    workProccesEndPort: 1591
+
+    # Cluster manager port
+    clusterManagerPort: 1541
+
+    # Server agent port (optional in case single cluster server)
+    serveragent: 1540
+
+    # RAS port
+    rasPort: 1545
+
+  ## Storage parameters
+  storage:
+    ##  Set persistentVolumenClaimName to reference an existing PVC
+    persistentVolumeClaimName:
+    ## Internal volume name and prefix of a created PVC
+    volumeName: "usr1cv8"
+    ## Alternative set requestedSize to define a size for a dynmaically created PVC
+    requestedSize:
+    ## the storage class name
+    className:
+    ## Default access mode (ReadWriteOnce)
+    accessModes:
+      - ReadWriteOnce
+    ## Additional storage annotations
+    annotations: {}
+    ## Additional storage labels
+    labels: {}
+
+client:
+  enabled: true
+  image:
+    repository: localhost/onec-client
+    tag:  8.3.18.1363
+  replicaCount: 1
+  netHasp: 
+    create: true
+    serverAddres: 192.168.1.1
+
+serviceAccount: 
+  create: true
+
+imagePullSecrets: []
+
+service: 
+  type: ClusterIP
+  port: 80

@@ -1,0 +1,97 @@
+{{- if .Values.server.enabled}}
+{{- $createPvc := and (empty .Values.server.storage.persistentVolumeClaimName) (.Values.server.storage.requestedSize) }}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "kubeonec.fullname" . }}-server
+  labels:
+    version: " {{- .Values.server.image.tag }}"
+    app: server
+spec:
+  serviceName: {{ include "kubeonec.fullname" . }}-service
+  selector:
+    matchLabels:
+      app: server
+  replicas: {{ .Values.server.replicaCount }}
+  template:
+    metadata:
+      labels:
+        app: server
+    spec:
+      initContainers:
+        - name: volume-permissions
+          image: busybox:1.35.0
+          command: ["sh", "-c", "chmod a+wx /home /var/log/kubeonec || true"]
+          volumeMounts:
+            - name: {{ .Values.server.storage.volumeName }}
+              mountPath: /home
+      containers:
+      - name: server
+        {{- if .Values.server.image.tag }}
+        image: "{{ .Values.server.image.repository }}:{{ .Values.server.image.tag }}"
+        {{- else }}
+        image: "{{ .Values.server.image.repository }}:latest"
+        {{- end }}
+        imagePullPolicy: Always
+        ports:
+          - name: cluster
+            containerPort: {{ .Values.server.ports.clusterManagerPort }}  
+            protocol: TCP
+          {{- range untilStep (int .Values.server.ports.workProccesStartPort) (int .Values.workProccesEndPort) 1 }}  
+          - name: "wp-{{ . }}"
+            containerPort: {{ . }}
+            protocol: TCP
+          {{- end }}
+          - name: serveragent
+            containerPort: {{ .Values.server.ports.serveragent }}
+            protocol: TCP
+          - name: ras
+            containerPort: {{ .Values.server.ports.rasPort }}
+            protocol: TCP
+        volumeMounts:
+        - name: aksusb
+          mountPath: /tmp/.aksusb
+        - name: {{ .Values.server.storage.volumeName }}
+          mountPath: /home
+      {{- if .Values.serviceAccount.create}}
+      serviceAccount: {{ include "kubeonec.fullname" . }}-sa
+      {{- end}}
+      volumes:
+      - name: aksusb
+        hostPath:
+          path: /tmp/.aksusb
+  {{- with .Values.server.storage }}
+  {{- if not $createPvc }}
+      - name: {{ .volumeName }}
+      {{- if .persistentVolumeClaimName }}
+        persistentVolumeClaim:
+          claimName: {{ .persistentVolumeClaimName }}
+      {{- else }}
+        emptyDir: {}
+      {{- end }}
+  {{- else }}      
+  volumeClaimTemplates:
+    - metadata:
+        name: {{ .volumeName }}
+      {{- with .labels }}
+        labels:
+        {{- toYaml . | nindent 10 }}
+      {{- end }}
+      {{- with .annotations }}
+        annotations:
+        {{- toYaml . | nindent 10 }}
+      {{- end }}
+      spec:
+        {{- with .accessModes }}
+        accessModes:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+        {{- if .className }}
+        storageClassName: {{ .className }}
+        {{- end }}
+        resources:
+          requests:
+            storage: {{ .requestedSize }}
+  {{- end }}
+  {{- end }}
+{{- end }}

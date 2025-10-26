@@ -1,0 +1,44 @@
+{{- if .Values.server.enabled}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "kubeonec.fullname" . }}-service
+  labels:
+    {{- include "kubeonec.labels" . | nindent 4 }}
+spec:
+  ports:
+      {{- range untilStep (int .Values.server.ports.workProccesStartPort) (int .Values.workProccesEndPort) 1 }}  
+        - protocol: TCP
+          name: wp-{{ . }}
+          port: {{ (int .) }}
+      {{- end }}
+        - protocol: TCP
+          name: clmen
+          port: {{ .Values.server.ports.serveragent }}
+        - protocol: TCP
+          name: cluster
+          port: {{ .Values.server.ports.clusterManagerPort }}
+        - name: ras
+          port: {{ .Values.server.ports.rasPort }}
+  clusterIP: None
+  selector:
+    app: server
+{{- end }}
+
+---
+{{- if .Values.client.enabled}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "kubeonec.fullname" . }}-client
+  labels:
+    {{- include "kubeonec.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+        - name: novnc
+          protocol: TCP
+          port: 80
+  selector:
+    app: client
+{{- end }}
