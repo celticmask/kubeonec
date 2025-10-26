@@ -1,0 +1,25 @@
+apiVersion: v1
+entries:
+  kubeonec:
+  - apiVersion: v2
+    appVersion: 1.16.3
+    created: "2025-10-26T20:00:56.086413859Z"
+    description: A Helm chart for Kubernetes
+    digest: abeb9712c797dfb40ffebc36f47e1f1ddd77dbb15ed89b067e67d8c175559b65
+    name: kubeonec
+    type: application
+    urls:
+    - kubeonec-0.1.6.tgz
+    version: 0.1.6
+  kubeonec-apache:
+  - apiVersion: v2
+    appVersion: 0.1.1
+    created: "2025-10-26T20:00:56.244299621Z"
+    description: A Helm chart for Kubernetes
+    digest: 9286ca415215b0867ae8f4381a6896f5b571a986f66ec59125523cb606d0e28a
+    name: kubeonec-apache
+    type: application
+    urls:
+    - kubeonec-apache-0.1.1.tgz
+    version: 0.1.1
+generated: "2025-10-26T20:00:56.244305857Z"
