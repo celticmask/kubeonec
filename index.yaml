@@ -1,5 +1,27 @@
 apiVersion: v1
 entries:
+  apache:
+  - apiVersion: v2
+    appVersion: 0.1.1
+    created: "2025-10-29T16:24:57.055426196Z"
+    description: A Helm chart 1C:Enterprise Apache for Kubernetes
+    digest: f697dd62117c2d2c7dc7d0a9280dcda503a0c1bff012e9c53158f412338012ec
+    name: apache
+    type: application
+    urls:
+    - apache-0.1.1.tgz
+    version: 0.1.1
+  bundle:
+  - apiVersion: v2
+    appVersion: 1.16.3
+    created: "2025-10-29T16:24:57.194415842Z"
+    description: A Helm chart 1C:Enterprise bundle for Kubernetes
+    digest: ddabd4211affa4e1d3e01c4d82762c857343c6953875075357c9576abc0ccfd2
+    name: bundle
+    type: application
+    urls:
+    - bundle-0.1.6.tgz
+    version: 0.1.6
   kubeonec:
   - apiVersion: v2
     appVersion: 1.16.3
@@ -22,4 +44,4 @@ entries:
     urls:
     - kubeonec-apache-0.1.1.tgz
     version: 0.1.1
-generated: "2025-10-26T20:00:56.244305857Z"
+generated: "2025-10-29T16:24:57.194421803Z"
