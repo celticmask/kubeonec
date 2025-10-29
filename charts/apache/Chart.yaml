@@ -1,6 +1,6 @@
 apiVersion: v2
-name: kubeonec-apache
-description: A Helm chart for Kubernetes
+name: apache
+description: A Helm chart 1C:Enterprise Apache for Kubernetes
 
 # A chart can be either an 'application' or a 'library' chart.
 #

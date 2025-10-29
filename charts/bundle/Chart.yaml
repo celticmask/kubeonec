@@ -1,6 +1,6 @@
 apiVersion: v2
-name: kubeonec
-description: A Helm chart for Kubernetes
+name: bundle
+description: A Helm chart 1C:Enterprise bundle for Kubernetes
 
 # A chart can be either an 'application' or a 'library' chart.
 #
