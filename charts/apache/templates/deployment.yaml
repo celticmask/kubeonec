@@ -25,6 +25,10 @@ spec:
       labels:
         {{- include "apache.selectorLabels" . | nindent 8 }}
     spec:
+      {{- with .Values.dnsConfig }}
+      dnsConfig:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}

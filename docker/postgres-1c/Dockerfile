@@ -43,6 +43,10 @@ RUN mkdir /docker-entrypoint-initdb.d \
  && chmod 3777 /var/run/postgresql \
  && mkdir -p "$PGDATA" && chown -R postgres:postgres "$PGDATA" && chmod 1777 "$PGDATA"
 
+# Check later
+#ADD https://raw.githubusercontent.com/docker-library/postgres/refs/heads/master/16/bookworm/docker-entrypoint.sh /usr/local/bin/
+#ADD https://raw.githubusercontent.com/docker-library/postgres/refs/heads/master/16/bookworm/docker-ensure-initdb.sh /usr/local/bin/
+
 COPY docker-entrypoint.sh docker-ensure-initdb.sh /usr/local/bin/
 
 RUN ln -sT docker-ensure-initdb.sh /usr/local/bin/docker-enforce-initdb.sh

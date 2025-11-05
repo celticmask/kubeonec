@@ -134,6 +134,11 @@ readinessProbe:
 ## Additional environment variables
 env: []
 
+## DNS config. Reqired for 1C server dns name resolution
+dnsConfig: {}
+#  searches:
+#    - server-namespace.svc.cluster.local
+
 ## Custom 1C .vrd config files that will be copied to dedicated folders
 vrdConfigs: {}
 #    demo.vrd: |
