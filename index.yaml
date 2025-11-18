@@ -64,4 +64,14 @@ entries:
     urls:
     - kubeonec-apache-0.1.1.tgz
     version: 0.1.1
-generated: "2025-11-05T12:53:43.842750314Z"
+  server-vm:
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: "2025-11-18T18:09:21.505022059Z"
+    description: Chart to deploy a 1C:Enterprise server VirtualMachine for Linux
+    digest: dc42ea0b9f8b9e5aa89c1430be51d23eefe20bd7440685a8099ed758b0e2b1b9
+    name: server-vm
+    urls:
+    - server-vm-0.1.0.tgz
+    version: 0.1.0
+generated: "2025-11-18T18:09:21.505037078Z"
