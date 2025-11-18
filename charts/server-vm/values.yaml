@@ -1,0 +1,44 @@
+image:
+  repository: quay.io/containerdisks
+  name: ubuntu
+  tag: 24.04
+
+resources:
+  requests:
+    memory: 1024Mi
+    cpu: 1
+
+service:
+  type: ClusterIP
+  port: 22
+  targetPort: 22
+  ## The node port (only relevant for type LoadBalancer or NodePort)
+  nodePort:
+  ## The cluster ip address (only relevant for type LoadBalancer or NodePort)
+  clusterIP:
+  ## The loadbalancer ip address (only relevant for type LoadBalancer)
+  loadBalancerIP:
+  ## Annotations to add to the service
+  annotations: {}
+  ## Labels to add to the service
+  labels: {}
+
+disks: []
+
+# 1C Enterprise specific
+server:
+  ports:
+    # Client connection ports
+    workProccesStartPort: 1560
+    workProccesEndPort: 1591
+
+    # Cluster manager port
+    clusterManagerPort: 1541
+
+    # Server agent port (optional in case single cluster server)
+    serveragent: 1540
+
+    # RAS port
+    rasPort: 1545
+
+

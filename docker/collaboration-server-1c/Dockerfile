@@ -1,34 +1,29 @@
 # Сервер взаимодействия 1С 8.3
 #https://its.1c.ru/db/v8311doc/content/232/hdoc
 
+FROM debian:trixie-slim
 
-FROM debian:bullseye-slim
-
-
-
-RUN mkdir -p /usr/share/man/man1 && \
-	apt-get update && apt-get install -y \
+RUN	apt-get update && apt-get install -y \
 	wget curl sudo gawk
 
 RUN mkdir -p /opt/dist && cd /opt/dist \
-	&& wget https://download.bell-sw.com/java/11.0.14+9/bellsoft-jdk11.0.14+9-linux-amd64.deb \
-	&& wget http://casa.ru/collaborationserver1c/1c_cs_11.0.25_linux_x86_64.tar.gz --no-check-certificate 
+	&& wget --no-check-certificate https://download.bell-sw.com/java/11.0.14+9/bellsoft-jdk11.0.14+9-linux-amd64.deb
+
+COPY 1c_cs_27.0.37_linux_x86_64.tar.gz /opt/dist
 
 RUN cd /opt/dist \
-	&& tar xzf 1c_cs_11.0.25_linux_x86_64.tar.gz \
+	&& tar xzf 1c_cs_27.0.37_linux_x86_64.tar.gz \
 	&& dpkg -i bellsoft-jdk11.0.14+9-linux-amd64.deb;  apt-get -f install -y \
 	&& dpkg -i *.deb \
 	&& ls /opt/dist \
 	&& ./1ce-installer-cli install \
 	&& rm -rf * 
 
-
 RUN apt-get clean && \
 	rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 		
 ENV JAVA_HOME /usr/lib/jvm/bellsoft-java11-amd64
 ENV PATH /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/lib/jvm/java-8-openjdk-amd64/bin:/opt/1C/1CE/components/1c-enterprise-ring-0.19.5+12-x86_64/
-
 
 RUN mkdir -p /var/cs/cs_instance && \
 	mkdir -p /var/cs/hc_instance && \

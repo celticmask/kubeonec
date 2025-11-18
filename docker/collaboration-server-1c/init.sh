@@ -7,7 +7,6 @@ ring cs --instance cs_instance jdbc pools --name privileged set-params --url jdb
 ring cs --instance cs_instance jdbc pools --name privileged set-params --username $POSTGRES_USER
 ring cs --instance cs_instance jdbc pools --name privileged set-params --password $POSTGRES_PASSWORD
 
-
 ring cs --instance cs_instance websocket set-params --hostname 0.0.0.0
 ring cs --instance cs_instance websocket set-params --port 8181
 
