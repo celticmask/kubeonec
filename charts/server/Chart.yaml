@@ -1,6 +1,6 @@
 apiVersion: v2
-name: bundle
-description: A Helm chart 1C:Enterprise bundle for Kubernetes
+name: server
+description: A Helm chart 1C:Enterprise server for Kubernetes
 
 # A chart can be either an 'application' or a 'library' chart.
 #
