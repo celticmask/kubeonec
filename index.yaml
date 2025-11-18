@@ -64,6 +64,17 @@ entries:
     urls:
     - kubeonec-apache-0.1.1.tgz
     version: 0.1.1
+  server:
+  - apiVersion: v2
+    appVersion: 1.16.3
+    created: "2025-11-18T18:11:13.649704865Z"
+    description: A Helm chart 1C:Enterprise server for Kubernetes
+    digest: 214acc7d763d02fbeb00217f0a546c60f1f49892cca9f00a36f8e4279bd2aa1a
+    name: server
+    type: application
+    urls:
+    - server-0.1.6.tgz
+    version: 0.1.6
   server-vm:
   - apiVersion: v1
     appVersion: "1.0"
@@ -74,4 +85,4 @@ entries:
     urls:
     - server-vm-0.1.0.tgz
     version: 0.1.0
-generated: "2025-11-18T18:09:21.505037078Z"
+generated: "2025-11-18T18:11:13.649720013Z"
