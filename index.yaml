@@ -2,6 +2,15 @@ apiVersion: v1
 entries:
   apache:
   - apiVersion: v2
+    created: "2025-11-19T19:01:23.771600036Z"
+    description: A Helm chart 1C:Enterprise Apache for Kubernetes
+    digest: e281be193187a14c8061f2b65c72ed52074ad4034c579f280543187ddc7f7545
+    name: apache
+    type: application
+    urls:
+    - apache-1.0.2.tgz
+    version: 1.0.2
+  - apiVersion: v2
     created: "2025-11-19T18:55:12.426163133Z"
     description: A Helm chart 1C:Enterprise Apache for Kubernetes
     digest: 9951e91eff618753f9ed3b2f722fc67d09e6956197d43eeae1bc4e72c7982986
@@ -103,4 +112,4 @@ entries:
     urls:
     - server-vm-0.1.0.tgz
     version: 0.1.0
-generated: "2025-11-19T18:55:12.426187568Z"
+generated: "2025-11-19T19:01:23.771626445Z"
