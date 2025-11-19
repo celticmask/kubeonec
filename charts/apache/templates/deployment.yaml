@@ -124,10 +124,8 @@ spec:
           volumeMounts:
           - name: extendedconfigs
             mountPath: /usr/local/apache2/conf/extra
-          {{- if .Values.vrdConfigs }}
           - name: vrdconfigs
             mountPath: /usr/local/apache2/conf/vrd
-          {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -144,13 +142,9 @@ spec:
       - name: extendedconfigs
         configMap:
           name: {{ include "apache.fullname" . }}-extendedconfigs
-      {{- if .Values.vrdConfigs }}
       - name: vrdconfigs
         configMap:
           name: {{ include "apache.fullname" . }}-vrdconfigs
           items:
-          {{- range $key, $value := .Values.vrdConfigs }}
-            - key: {{ $key }}
-              path: {{ trimSuffix ".vrd" $key }}/{{ $key }}
-          {{- end }}
-      {{- end }}
+            - key: {{ .Values.db.name }}
+              path: {{ .Values.db.name }}/{{ .Values.db.name }}.vrd
