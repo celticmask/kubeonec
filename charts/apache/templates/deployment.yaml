@@ -146,5 +146,5 @@ spec:
         configMap:
           name: {{ include "apache.fullname" . }}-vrdconfigs
           items:
-            - key: {{ .Values.db.name }}
+            - key: {{ .Values.db.name }}.vrd
               path: {{ .Values.db.name }}/{{ .Values.db.name }}.vrd
