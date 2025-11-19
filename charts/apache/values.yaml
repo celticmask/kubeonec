@@ -143,16 +143,14 @@ dnsConfig: {}
 #  searches:
 #    - server-namespace.svc.cluster.local
 
-## Custom 1C .vrd config files that will be copied to dedicated folders
-vrdConfigs: {}
-#    demo.vrd: |
-#      <?xml version="1.0" encoding="UTF-8"?>
-#      <point xmlns="http://v8.1c.ru/8.2/virtual-resource-system"
-#        xmlns:xs="http://www.w3.org/2001/XMLSchema"
-#        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-#        base="/demo"
-#        ib="Srvr=&quot;localhost&quot;;Ref=&quot;demo&quot;;">
-#      </point>
+# Database parameters for .vrd template file
+db:
+  name: "demo"
+  server: "server-1c.local"
 
-## Overwrite default apache .conf
-apacheDefaultSiteConfig:
+# .vrd OIDC integration (optional)
+oidc: {}
+#  url: "https://keycloak.my.org"
+#  realm: "my_realm"
+#  client_id: "client_id"
+#  redirect_host: "https://chart-example.local"

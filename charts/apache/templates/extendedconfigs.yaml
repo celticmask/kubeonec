@@ -6,14 +6,14 @@ metadata:
     {{- include "apache.labels" . | nindent 4 }}
 data:
   httpd-default.conf: |
-    {{- if .Values.apacheDefaultSiteConfig }}
-    {{ .Values.apacheDefaultSiteConfig | nindent 4 }}
-    {{- else }}
-    <VirtualHost 0.0.0.0:{{ .Values.containerPort }}>
-        ServerAdmin webmaster@localhost
-        ServerName dummy-host.example.com
-        ServerAlias www.dummy-host.example.com
-        ErrorLog "logs/dummy-host.example.com-error_log"
-        CustomLog "logs/dummy-host.example.com-access_log" common
+    <VirtualHost *:*>
+            LoadModule _1cws_module modules/1c/wsap24.so
+            DocumentRoot "conf/vrd/{{ .Values.db.name }}"
+            <Directory "conf/vrd/{{ .Values.db.name }}">
+                    AllowOverride All
+                    Options None
+                    Require all granted
+                    SetHandler 1c-application
+                    ManagedApplicationDescriptor "conf/vrd/{{ .Values.db.name }}/{{ .Values.db.name }}.vrd"
+            </Directory>
     </VirtualHost>
-    {{- end }}

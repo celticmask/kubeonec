@@ -1,4 +1,3 @@
-{{- if .Values.vrdConfigs }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -6,8 +5,52 @@ metadata:
   labels:
     {{- include "apache.labels" . | nindent 4 }}
 data:
-{{- range $name, $value := .Values.vrdConfigs }}
-  {{- $name | nindent 2 }}: |
-    {{- $value | nindent 4 }}
-{{- end }}
-{{- end }}
+  {{ .Values.db.name }}.vrd: |-
+    <?xml version="1.0" encoding="UTF-8"?>
+    <point xmlns="http://v8.1c.ru/8.2/virtual-resource-system"
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        base="/{{ .Values.db.name }}"
+        ib="Srvr=&quot;{{ .Values.db.server }}&quot;;Ref=&quot;{{ .Values.db.name }}&quot;;"
+        enableStandardOData="false">
+    {{- if .Values.oidc }}                
+        <openidconnect>
+                <providers>
+        <![CDATA[
+        [
+            {
+                "name": "SSO",
+                "title": "SSO",
+                "authenticationClaimName": "preferred_username",
+                "providerconfig": {
+                    "issuer": "{{ .Values.oidc.url }}/realms/{{ .Values.oidc.realm }}",
+                    "authorization_endpoint": "{{ .Values.oidc.url }}/realms/{{ .Values.oidc.realm }}/protocol/openid-connect/auth",
+                    "token_endpoint": "{{ .Values.oidc.url }}/realms/{{ .Values.oidc.realm }}/protocol/openid-connect/token",
+                    "response_types_supported": [
+                        "code",
+                        "token",
+                        "id_token token"
+                    ],
+                    "scopes_supported": [
+                        "openid",
+                        "email",
+                        "profile"
+                    ],
+                    "jwks_uri": "{{ .Values.oidc.url }}/realms/{{ .Values.oidc.realm }}/protocol/openid-connect/certs",
+                    "userinfo_endpoint": "{{ .Values.oidc.url }}/realms/{{ .Values.oidc.realm }}/protocol/openid-connect/userinfo"
+                },
+                "clientconfig": {
+                    "authority": "{{ .Values.oidc.url }}/realms/{{ .Values.oidc.realm }}/protocol/openid-connect/auth",
+                    "client_id": "{{ .Values.oidc.client_id }}",
+                    "redirect_uri": "{{ .Values.oidc.redirect_host }}/{{ .Values.db.name }}/authform.html",
+                    "response_type": "id_token token",
+                    "scope": "openid email"
+                }
+            }
+        ]
+        ]]>
+                </providers>
+                <allowStandardAuthentication>false</allowStandardAuthentication>
+        </openidconnect>
+    {{- end }}
+    </point>
