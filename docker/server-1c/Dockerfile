@@ -9,6 +9,7 @@ RUN apt-get update; \
 COPY server64_*.tar.gz ./
 RUN tar -xzvf server64_*.tar.gz
 
+# Second stage
 FROM ubuntu:22.04
 
 ARG ONEC_VERSION=8.3.22.2411

@@ -1,0 +1,120 @@
+## Default values for 1C Collaboration server deployment
+
+## Image
+cs:
+  image:
+    repository: localhost/1ccs-cs
+    pullPolicy: Always
+    tag: ""
+
+elasticsearch:
+  image:
+    repository: localhost/1ccs-elastic
+    pullPolicy: Always
+    tag: ""
+
+hazelcast:
+  image:
+    repository: localhost/1ccs-hazelcast
+    pullPolicy: Always
+    tag: ""
+
+## Pull secrets and name override options
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+## Pod deployment strategy
+strategy: {}
+
+## Optional service account
+serviceAccount: {}
+  # Specifies whether a service account should be created
+  # create: false
+  # Annotations to add to the service account
+  # annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  # name: ""
+
+## Additional pod annotations
+podAnnotations: {}
+
+## Pod security options (Run as nobody)
+# podSecurityContext:
+#   fsGroup: 65534
+#   runAsUser: 65534
+#   runAsNonRoot: true
+
+## Default security options to run Apache as non-root, read only container without privilege escalation
+# securityContext:
+#   readOnlyRootFilesystem: true
+#   allowPrivilegeEscalation: false
+#   privileged: false
+
+## Number of replicas
+replicaCount: 1
+
+## Default service port
+service:
+  type: ClusterIP
+  port: 8086
+  ## The node port (only relevant for type LoadBalancer or NodePort)
+  nodePort:
+  ## The cluster ip address (only relevant for type LoadBalancer or NodePort)
+  clusterIP:
+  ## The loadbalancer ip address (only relevant for type LoadBalancer)
+  loadBalancerIP:
+  # Annotations to add to the service
+  annotations: {}
+
+##
+## PostgreSQL chart configuration
+## for more options see https://github.com/groundhog2k/helm-charts/tree/master/charts/postgres
+##
+postgresql:
+  enabled: true
+  useDeployment: true
+  settings:
+    superuser:
+      value: postgres
+    superuserPassword: 
+      value: changeme
+    database: cs_db
+
+## Resource limits and requests
+resources: {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+## Default node type for the image
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+## Maximum number of revisions maintained in revision history
+revisionHistoryLimit:
+
+## Pod disruption budget
+podDisruptionBudget: {}
+  ## Minimum number of pods that must be available after eviction
+  # minAvailable:
+  ## Maximum number of pods that can be unavailable after eviction
+  # maxUnavailable:
+
+containerPort: 80
+
+## Additional environment variables
+env: []
+
+## DNS config. Reqired for 1C server dns name resolution
+dnsConfig: {}
+#  searches:
+#    - server-namespace.svc.cluster.local
+

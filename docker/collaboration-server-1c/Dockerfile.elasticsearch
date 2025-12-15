@@ -1,0 +1,25 @@
+FROM bellsoft/liberica-openjdk-debian:11
+
+RUN apt-get update && apt-get -y install sudo curl nano gawk mc; \
+	rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+COPY 1c_cs ./
+
+# Install specified components only
+RUN ./1ce-installer-cli install 1c-cs --components 1c-cs-elasticsearch --ignore-signature-warnings; \
+	rm -rf /app
+
+# Make ring utility available in PATH
+ENV PATH /opt/1C/1CE/components/1c-enterprise-ring-0.19.5+12-x86_64:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+RUN groupadd -r elasticsearch && useradd -r -s /bin/false -g elasticsearch elasticsearch; \
+	mkdir -p /var/cs/elastic_instance && chown -R elasticsearch:elasticsearch /opt/1C /var/cs
+
+RUN ring elasticsearch instance create --dir /var/cs/elastic_instance --owner elasticsearch 
+
+USER elasticsearch
+
+EXPOSE 9300
+
+ENTRYPOINT ["/opt/1C/1CE/components/1c-cs-elasticsearch-5.6.12-23-x86_64/bin/launcher", "start", "--instance", "/var/cs/elastic_instance"]

@@ -1,0 +1,12 @@
+apiVersion: v2
+name: collaboration-server
+description: A Helm chart 1C:Enterprise Collaboration server for Kubernetes
+type: application
+version: 0.1.0
+#appVersion: 1.16.3
+dependencies:
+  - name: postgres
+    version: 1.6.1
+    repository: https://groundhog2k.github.io/helm-charts
+    alias: postgresql
+    condition: postgresql.enabled
