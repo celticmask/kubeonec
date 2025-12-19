@@ -50,7 +50,7 @@ data:
         ]
         ]]>
                 </providers>
-                <allowStandardAuthentication>false</allowStandardAuthentication>
+                <allowStandardAuthentication>true</allowStandardAuthentication>
         </openidconnect>
     {{- end }}
     </point>
