@@ -1,21 +1,21 @@
 ## Default values for 1C Collaboration server deployment
 
-## Image
+## Images
 cs:
   image:
-    repository: localhost/1ccs-cs
+    repository: localhost/cs-1c
     pullPolicy: Always
     tag: ""
 
 elasticsearch:
   image:
-    repository: localhost/1ccs-elastic
+    repository: localhost/elasticsearch-1c
     pullPolicy: Always
     tag: ""
 
 hazelcast:
   image:
-    repository: localhost/1ccs-hazelcast
+    repository: localhost/hazelcast-1c
     pullPolicy: Always
     tag: ""
 
@@ -58,7 +58,7 @@ replicaCount: 1
 ## Default service port
 service:
   type: ClusterIP
-  port: 8086
+  port: 9094
   ## The node port (only relevant for type LoadBalancer or NodePort)
   nodePort:
   ## The cluster ip address (only relevant for type LoadBalancer or NodePort)
@@ -76,12 +76,19 @@ postgresql:
   enabled: true
   useDeployment: true
   settings:
-    superuser:
-      value: postgres
     superuserPassword: 
-      value: changeme
-    database: cs_db
-
+      value: postgres
+  userDatabase:
+    name: 
+      value: cs_db
+    user: 
+      value: cs_user
+    password: 
+      value: cs_password
+  customScripts:
+    uuid-extension.sql: |
+      CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+        
 ## Resource limits and requests
 resources: {}
   # limits:
@@ -107,8 +114,6 @@ podDisruptionBudget: {}
   # minAvailable:
   ## Maximum number of pods that can be unavailable after eviction
   # maxUnavailable:
-
-containerPort: 80
 
 ## Additional environment variables
 env: []

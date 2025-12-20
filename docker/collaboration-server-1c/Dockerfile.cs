@@ -33,10 +33,10 @@ RUN ring cs --instance cs_instance hazelcast set-params --group-name 1ce-cs --gr
     && ring cs --instance cs_instance jdbc pools --name privileged set-params --username postgres\
     && ring cs --instance cs_instance jdbc pools --name privileged set-params --password postgres\
     # WebSocket
-    && ring cs --instance cs_instance websocket set-params --hostname $HOSTNAME \
-    && ring cs --instance cs_instance websocket set-params --port 8086
+    && ring cs --instance cs_instance websocket set-params --hostname 0.0.0.0 \
+    && ring cs --instance cs_instance websocket set-params --port 9094
 
+EXPOSE 9094
 EXPOSE 8087
-EXPOSE 8086
 
 ENTRYPOINT ["/opt/1C/1CE/components/1c-cs-server-small-27.0.37-x86_64/bin/launcher", "start", "--instance", "/var/cs/cs_instance"]

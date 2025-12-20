@@ -43,17 +43,17 @@ spec:
           image: "{{ .Values.elasticsearch.image.repository }}:{{ .Values.elasticsearch.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.elasticsearch.image.pullPolicy }}
           ports:
-            - name: http
+            - name: elasticsearch
               containerPort: 9300
               protocol: TCP
         - name: hazelcast
           image: "{{ .Values.hazelcast.image.repository }}:{{ .Values.hazelcast.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.hazelcast.image.pullPolicy }}
           ports:
-            - name: http
+            - name: hazelcast
               containerPort: 57001
               protocol: TCP
-            - name: http
+            - name: web
               containerPort: 8088
               protocol: TCP
         - name: {{ .Chart.Name }}
@@ -64,8 +64,8 @@ spec:
           image: "{{ .Values.cs.image.repository }}:{{ .Values.cs.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.cs.image.pullPolicy }}
           ports:
-            - name: http
-              containerPort: {{ .Values.containerPort }}
+            - name: websocket
+              containerPort: 9094
               protocol: TCP
           env:
           {{- with .Values.env }}
@@ -73,7 +73,14 @@ spec:
           {{- end }}
           volumeMounts:
           - name: cs-config
-            mountPath: /var/cs/cs_instance/config
+            mountPath: /var/cs/cs_instance/config/jdbc.yml
+            subPath: jdbc.yml
+          - name: cs-config
+            mountPath: /var/cs/cs_instance/config/elasticsearch.yml
+            subPath: elasticsearch.yml
+          - name: cs-config
+            mountPath: /var/cs/cs_instance/config/hazelcast.yml
+            subPath: hazelcast.yml
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -89,4 +96,4 @@ spec:
       volumes:
       - name: cs-config
         secret:
-          secretName: {{ include "kubeonec-cs.fullname" . }}-cs-config
+          secretName: cs-config

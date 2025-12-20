@@ -11,16 +11,10 @@ metadata:
 spec:
   type: {{ .Values.service.type }}
   ports:
-    - protocol: TCP
-      name: elasticsearch
-      port: 9300
-    - protocol: TCP
-      name: hazelcast
-      port: 57001
     - port: {{ .Values.service.port }}
-      targetPort: http
+      targetPort: 9094
       protocol: TCP
-      name: http
+      name: websocket
       {{- if and ( or (eq .Values.service.type "LoadBalancer") (eq .Values.service.type "NodePort") ) (.Values.service.nodePort) }}
       nodePort: {{ .Values.service.nodePort }}
       {{- end }}
