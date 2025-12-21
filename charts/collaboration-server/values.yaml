@@ -76,6 +76,8 @@ postgresql:
   enabled: true
   useDeployment: true
   settings:
+    superuser:
+      value: postgres
     superuserPassword: 
       value: postgres
   userDatabase:
