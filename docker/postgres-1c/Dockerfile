@@ -1,15 +1,15 @@
-FROM ubuntu:jammy-20230605 AS add-apt-repositories
+FROM ubuntu:jammy AS add-apt-repositories
 
-ENV PG_VERSION=16
+ENV PG_VERSION=18
 
 RUN apt-get update \
  && DEBIAN_FRONTEND=noninteractive apt-get install -y wget gnupg \
  && wget --quiet -O - http://repo.postgrespro.ru/keys/GPG-KEY-POSTGRESPRO | apt-key add - \
  && echo deb http://repo.postgrespro.ru/1c-${PG_VERSION}/ubuntu jammy main >> /etc/apt/sources.list
 
-FROM ubuntu:jammy-20230605
+FROM ubuntu:jammy
 
-ENV PG_VERSION=16 \
+ENV PG_VERSION=18 \
     LANG=ru_RU.UTF-8 \
     LANGUAGE=ru_RU.UTF-8 \
     PGDATA=/var/lib/postgresql/data \

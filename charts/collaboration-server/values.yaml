@@ -68,6 +68,21 @@ service:
   # Annotations to add to the service
   annotations: {}
 
+ingress:
+  enabled: false
+  ingressClassName:
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  pathType: ImplementationSpecific
+  path: /
+  hosts:
+    - chart-example.local
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
 ##
 ## PostgreSQL chart configuration
 ## for more options see https://github.com/groundhog2k/helm-charts/tree/master/charts/postgres
