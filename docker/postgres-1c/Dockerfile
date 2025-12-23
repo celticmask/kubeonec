@@ -1,13 +1,14 @@
-FROM ubuntu:jammy AS add-apt-repositories
+FROM ubuntu:noble AS add-apt-repositories
 
 ENV PG_VERSION=18
 
 RUN apt-get update \
  && DEBIAN_FRONTEND=noninteractive apt-get install -y wget gnupg \
  && wget --quiet -O - http://repo.postgrespro.ru/keys/GPG-KEY-POSTGRESPRO | apt-key add - \
- && echo deb http://repo.postgrespro.ru/1c-${PG_VERSION}/ubuntu jammy main >> /etc/apt/sources.list
+ && echo deb http://repo.postgrespro.ru/1c-${PG_VERSION}/ubuntu noble main >> /etc/apt/sources.list
 
-FROM ubuntu:jammy
+####### Second stage #########
+FROM ubuntu:noble
 
 ENV PG_VERSION=18 \
     LANG=ru_RU.UTF-8 \
@@ -47,7 +48,7 @@ RUN mkdir /docker-entrypoint-initdb.d \
 #ADD https://raw.githubusercontent.com/docker-library/postgres/refs/heads/master/16/bookworm/docker-entrypoint.sh /usr/local/bin/
 #ADD https://raw.githubusercontent.com/docker-library/postgres/refs/heads/master/16/bookworm/docker-ensure-initdb.sh /usr/local/bin/
 
-COPY docker-entrypoint.sh docker-ensure-initdb.sh /usr/local/bin/
+COPY --chmod=0755 docker-entrypoint.sh docker-ensure-initdb.sh /usr/local/bin/
 
 RUN ln -sT docker-ensure-initdb.sh /usr/local/bin/docker-enforce-initdb.sh
 
