@@ -147,10 +147,12 @@ dnsConfig: {}
 db:
   name: "demo"
   server: "server-1c.local"
+  enableStandardOData: false
 
 # .vrd OIDC integration (optional)
 oidc: {}
 #  url: "https://keycloak.my.org"
 #  realm: "my_realm"
-#  client_id: "client_id"
-#  redirect_host: "https://chart-example.local"
+#  clientId: "client_id"
+#  redirectHost: "https://chart-example.local"
+#  allowStandardAuthentication: false # Optional, default is false

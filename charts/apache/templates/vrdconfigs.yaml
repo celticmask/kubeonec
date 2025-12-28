@@ -12,7 +12,7 @@ data:
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         base="/{{ .Values.db.name }}"
         ib="Srvr=&quot;{{ .Values.db.server }}&quot;;Ref=&quot;{{ .Values.db.name }}&quot;;"
-        enableStandardOData="false">
+        enableStandardOData={{ .Values.db.enableStandardOData | quote }}>
     {{- if .Values.oidc }}                
         <openidconnect>
                 <providers>
@@ -41,8 +41,8 @@ data:
                 },
                 "clientconfig": {
                     "authority": "{{ .Values.oidc.url }}/realms/{{ .Values.oidc.realm }}/protocol/openid-connect/auth",
-                    "client_id": "{{ .Values.oidc.client_id }}",
-                    "redirect_uri": "{{ .Values.oidc.redirect_host }}/{{ .Values.db.name }}/authform.html",
+                    "client_id": "{{ .Values.oidc.clientId }}",
+                    "redirect_uri": "{{ .Values.oidc.redirectHost }}/{{ .Values.db.name }}/authform.html",
                     "response_type": "id_token token",
                     "scope": "openid email"
                 }
@@ -50,7 +50,7 @@ data:
         ]
         ]]>
                 </providers>
-                <allowStandardAuthentication>true</allowStandardAuthentication>
+                <allowStandardAuthentication>{{ .Values.oidc.allowStandardAuthentication | default false }}</allowStandardAuthentication>
         </openidconnect>
     {{- end }}
     </point>
