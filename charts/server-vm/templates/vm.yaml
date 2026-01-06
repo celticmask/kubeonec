@@ -26,7 +26,8 @@ spec:
               cdrom:
                 bus: sata
               bootOrder: 2  
-            {{- range .Values.disks }}
+            {{- with .Values.disks }}
+              {{- toYaml . | nindent 12 }}
             {{- end }}
       volumes:
         {{- range .Values.disks }}
@@ -37,3 +38,4 @@ spec:
         - name: containerdisk
           containerDisk:
             image: "{{ .Values.image.repository }}/{{ .Values.image.name }}:{{ .Values.image.tag }}"
+            imagePullSecret: {{ .Values.image.imagePullSecret }}

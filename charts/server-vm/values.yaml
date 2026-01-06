@@ -2,6 +2,7 @@ image:
   repository: quay.io/containerdisks
   name: ubuntu
   tag: 24.04
+  imagePullSecret: ""
 
 resources:
   requests:
