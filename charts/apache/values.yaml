@@ -156,3 +156,9 @@ oidc: {}
 #  clientId: "client_id"
 #  redirectHost: "https://chart-example.local"
 #  allowStandardAuthentication: false # Optional, default is false
+
+pubDst: []
+# List of distributions publications
+# - pubdstwin64="http://www.myhost.com/files/client-win-64.zip"
+# - pubdstmac64="http://www.myhost.com/files/client-mac-64.zip"
+# - pubdstlin64="http://www.myhost.com/files/setup-fhin-8.3.20.100-x86_64.run"

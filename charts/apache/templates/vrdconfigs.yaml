@@ -13,6 +13,9 @@ data:
         base="/{{ .Values.db.name }}"
         ib="Srvr=&quot;{{ .Values.db.server }}&quot;;Ref=&quot;{{ .Values.db.name }}&quot;;"
         enableStandardOData={{ .Values.db.enableStandardOData | quote }}>
+        {{- range .Values.pubDst }}
+        {{ . }}
+        {{- end }}        
     {{- if .Values.oidc }}                
         <openidconnect>
                 <providers>

@@ -6,13 +6,12 @@ RUN apt-get update; \
  apt-get install -y software-properties-common gnupg curl; \
  add-apt-repository -n -y "deb http://archive.ubuntu.com/ubuntu/ focal universe"
 
-ARG ONEC_VERSION=8.3.20.1710
+ARG ONEC_VERSION=8.3.27.1989
 ENV ONEC_DATA=/home/usr1cv8/srvinfo
 ENV LANG=ru_RU.UTF-8
 ENV DEBIAN_FRONTEND=noninteractive
 
-COPY server64_$ONEC_VERSION.tar.gz .
-RUN tar -xzvf ./server64_$ONEC_VERSION.tar.gz
+COPY ./setup-full-$ONEC_VERSION-x86_64.run .
 
 RUN set -xe; \
   apt-get update; \
@@ -27,7 +26,7 @@ RUN set -xe; \
 # Second stage 
 FROM httpd:2.4
 
-ARG ONEC_VERSION=8.3.20.1710
+ARG ONEC_VERSION=8.3.27.1989
 
 RUN echo "LoadModule _1cws_module modules/1c/wsap24.so\n" >> conf/httpd.conf && echo "Include conf/extra/httpd-default.conf\n" >> conf/httpd.conf
 
