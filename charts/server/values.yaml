@@ -43,7 +43,7 @@ server:
     labels: {}
 
 client:
-  enabled: true
+  enabled: false
   image:
     repository: localhost/onec-client
     tag:  8.3.18.1363
