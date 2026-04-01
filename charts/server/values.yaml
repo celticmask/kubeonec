@@ -23,6 +23,9 @@ ports:
   # RAS port
   rasPort: 1545
 
+## Service annotations
+annotations: {}
+
 ## Storage parameters
 storage:
   ##  Set persistentVolumenClaimName to reference an existing PVC

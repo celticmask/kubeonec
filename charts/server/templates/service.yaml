@@ -4,6 +4,10 @@ metadata:
   name: {{ include "kubeonec.fullname" . }}-service
   labels:
     {{- include "kubeonec.labels" . | nindent 4 }}
+  {{- with .Values.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 spec:
   ports:
       {{- range untilStep (int .Values.ports.workProccesStartPort) (int .Values.workProccesEndPort) 1 }}  
