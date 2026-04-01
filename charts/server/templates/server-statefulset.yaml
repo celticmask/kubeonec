@@ -54,10 +54,12 @@ spec:
         volumeMounts:
         - name: {{ .Values.server.storage.volumeName }}
           mountPath: /home
-      {{- if .Values.server.useHasp }}    
+        {{- if .Values.server.useHasp }}    
         - name: aksusb
           mountPath: /tmp/.aksusb
+        {{- end }}
       volumes:
+      {{- if .Values.server.useHasp }}
       - name: aksusb
         hostPath:
           path: /tmp/.aksusb
