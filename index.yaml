@@ -191,6 +191,16 @@ entries:
   server:
   - apiVersion: v2
     appVersion: 1.16.3
+    created: "2026-04-01T13:49:47.280995226Z"
+    description: A Helm chart 1C:Enterprise server for Kubernetes
+    digest: 610c52bb31b40e0f43b5c0294b9226094fb39837aa0c3569c815d116949aabe3
+    name: server
+    type: application
+    urls:
+    - server-0.2.0.tgz
+    version: 0.2.0
+  - apiVersion: v2
+    appVersion: 1.16.3
     created: "2026-04-01T13:38:18.724095771Z"
     description: A Helm chart 1C:Enterprise server for Kubernetes
     digest: 0366b8de297076eeafca3804cb0efd8b5970c448d41f32cd8b13f252381bba18
@@ -247,4 +257,4 @@ entries:
     urls:
     - server-vm-0.1.0.tgz
     version: 0.1.0
-generated: "2026-04-01T13:38:18.724147656Z"
+generated: "2026-04-01T13:49:47.281052543Z"
