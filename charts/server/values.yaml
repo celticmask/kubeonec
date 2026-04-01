@@ -14,13 +14,10 @@ server:
     # Client connection ports
     workProccesStartPort: 1560
     workProccesEndPort: 1591
-
     # Cluster manager port
     clusterManagerPort: 1541
-
     # Server agent port (optional in case single cluster server)
     serveragent: 1540
-
     # RAS port
     rasPort: 1545
 
@@ -41,6 +38,9 @@ server:
     annotations: {}
     ## Additional storage labels
     labels: {}
+
+  # Access to host machine hasp keys
+  useHasp: false
 
 client:
   enabled: false

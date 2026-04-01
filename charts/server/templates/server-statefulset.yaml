@@ -25,6 +25,9 @@ spec:
           volumeMounts:
             - name: {{ .Values.server.storage.volumeName }}
               mountPath: /home
+      {{- if .Values.serviceAccount.create}}
+      serviceAccount: {{ include "kubeonec.fullname" . }}-sa
+      {{- end}}
       containers:
       - name: server
         {{- if .Values.server.image.tag }}
@@ -49,17 +52,16 @@ spec:
             containerPort: {{ .Values.server.ports.rasPort }}
             protocol: TCP
         volumeMounts:
-        - name: aksusb
-          mountPath: /tmp/.aksusb
         - name: {{ .Values.server.storage.volumeName }}
           mountPath: /home
-      {{- if .Values.serviceAccount.create}}
-      serviceAccount: {{ include "kubeonec.fullname" . }}-sa
-      {{- end}}
+      {{- if .Values.server.useHasp }}    
+        - name: aksusb
+          mountPath: /tmp/.aksusb
       volumes:
       - name: aksusb
         hostPath:
           path: /tmp/.aksusb
+      {{- end }}
   {{- with .Values.server.storage }}
   {{- if not $createPvc }}
       - name: {{ .volumeName }}
