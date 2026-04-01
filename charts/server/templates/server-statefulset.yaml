@@ -1,18 +1,17 @@
-{{- if .Values.server.enabled}}
-{{- $createPvc := and (empty .Values.server.storage.persistentVolumeClaimName) (.Values.server.storage.requestedSize) }}
+{{- $createPvc := and (empty .Values.storage.persistentVolumeClaimName) (.Values.storage.requestedSize) }}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: {{ include "kubeonec.fullname" . }}-server
   labels:
-    version: " {{- .Values.server.image.tag }}"
+    version: " {{- .Values.image.tag }}"
     app: server
 spec:
   serviceName: {{ include "kubeonec.fullname" . }}-service
   selector:
     matchLabels:
       app: server
-  replicas: {{ .Values.server.replicaCount }}
+  replicas: {{ .Values.replicaCount }}
   template:
     metadata:
       labels:
@@ -23,48 +22,48 @@ spec:
           image: busybox:1.35.0
           command: ["sh", "-c", "chmod a+wx /home /var/log/kubeonec || true"]
           volumeMounts:
-            - name: {{ .Values.server.storage.volumeName }}
+            - name: {{ .Values.storage.volumeName }}
               mountPath: /home
       {{- if .Values.serviceAccount.create}}
       serviceAccount: {{ include "kubeonec.fullname" . }}-sa
       {{- end}}
       containers:
       - name: server
-        {{- if .Values.server.image.tag }}
-        image: "{{ .Values.server.image.repository }}:{{ .Values.server.image.tag }}"
+        {{- if .Values.image.tag }}
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         {{- else }}
-        image: "{{ .Values.server.image.repository }}:latest"
+        image: "{{ .Values.image.repository }}:latest"
         {{- end }}
         imagePullPolicy: Always
         ports:
           - name: cluster
-            containerPort: {{ .Values.server.ports.clusterManagerPort }}  
+            containerPort: {{ .Values.ports.clusterManagerPort }}  
             protocol: TCP
-          {{- range untilStep (int .Values.server.ports.workProccesStartPort) (int .Values.workProccesEndPort) 1 }}  
+          {{- range untilStep (int .Values.ports.workProccesStartPort) (int .Values.workProccesEndPort) 1 }}  
           - name: "wp-{{ . }}"
             containerPort: {{ . }}
             protocol: TCP
           {{- end }}
           - name: serveragent
-            containerPort: {{ .Values.server.ports.serveragent }}
+            containerPort: {{ .Values.ports.serveragent }}
             protocol: TCP
           - name: ras
-            containerPort: {{ .Values.server.ports.rasPort }}
+            containerPort: {{ .Values.ports.rasPort }}
             protocol: TCP
         volumeMounts:
-        - name: {{ .Values.server.storage.volumeName }}
+        - name: {{ .Values.storage.volumeName }}
           mountPath: /home
-        {{- if .Values.server.useHasp }}    
+        {{- if .Values.useHasp }}    
         - name: aksusb
           mountPath: /tmp/.aksusb
         {{- end }}
       volumes:
-      {{- if .Values.server.useHasp }}
+      {{- if .Values.useHasp }}
       - name: aksusb
         hostPath:
           path: /tmp/.aksusb
       {{- end }}
-  {{- with .Values.server.storage }}
+  {{- with .Values.storage }}
   {{- if not $createPvc }}
       - name: {{ .volumeName }}
       {{- if .persistentVolumeClaimName }}
@@ -98,4 +97,3 @@ spec:
             storage: {{ .requestedSize }}
   {{- end }}
   {{- end }}
-{{- end }}
