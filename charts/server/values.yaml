@@ -62,3 +62,10 @@ useHasp: false
 
 serviceAccount: 
   create: true
+
+## Pod-level security context
+securityContext:
+  enabled: true
+  fsGroup: 999
+  runAsNonRoot: true
+  fsGroupChangePolicy: OnRootMismatch
