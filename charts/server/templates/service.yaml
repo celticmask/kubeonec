@@ -38,7 +38,7 @@ metadata:
   {{- end }}
 spec:
   ports:
-  {{- range untilStep (int $.Values.ports.workProccesStartPort) (int $.Values.workProccesEndPort) 1 }}  
+  {{- range untilStep (int $.Values.ports.workProccesStartPort) (int $.Values.ports.workProccesEndPort) 1 }}  
     - protocol: TCP
       name: rphost-{{ . }}
       port: {{ (int .) }}
