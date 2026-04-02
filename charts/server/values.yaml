@@ -4,7 +4,7 @@
 
 image:
   repository: localhost/onec-server
-  pullPolicy: Always
+  pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: 8.3.18.1363
 
@@ -67,5 +67,5 @@ serviceAccount:
 securityContext:
   enabled: true
   fsGroup: 999
-  runAsNonRoot: true
+  runAsUser: 999
   fsGroupChangePolicy: OnRootMismatch

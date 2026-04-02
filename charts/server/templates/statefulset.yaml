@@ -18,6 +18,13 @@ spec:
       labels:
         {{- include "kubeonec.selectorLabels" . | nindent 8 }}
     spec:
+      initContainers:
+        - name: volume-permissions
+          image: busybox:1.35.0
+          command: ["sh", "-c", "chmod a+wx /home /var/log/kubeonec || true"]
+          volumeMounts:
+            - name: {{ .Values.storage.volumeName }}
+              mountPath: /home
       {{- if .Values.securityContext.enabled }}
       securityContext: {{- omit .Values.securityContext "enabled" | toYaml | nindent 8 }}
       {{- end }}
@@ -35,7 +42,7 @@ spec:
         {{- else }}
         image: "{{ .Values.image.repository }}:latest"
         {{- end }}
-        imagePullPolicy: Always
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
         ports:
           - name: rmngr
             containerPort: {{ .Values.ports.clusterManagerPort }}  
