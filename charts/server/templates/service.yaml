@@ -1,28 +1,56 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "kubeonec.fullname" . }}-service
+  name: {{ include "kubeonec.fullname" . }}
   labels:
     {{- include "kubeonec.labels" . | nindent 4 }}
-  {{- with .Values.annotations }}
+  {{- with .Values.service.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
   ports:
-      {{- range untilStep (int .Values.ports.workProccesStartPort) (int .Values.workProccesEndPort) 1 }}  
-        - protocol: TCP
-          name: wp-{{ . }}
-          port: {{ (int .) }}
-      {{- end }}
-        - protocol: TCP
-          name: clmen
-          port: {{ .Values.ports.serveragent }}
-        - protocol: TCP
-          name: cluster
-          port: {{ .Values.ports.clusterManagerPort }}
-        - name: ras
-          port: {{ .Values.ports.rasPort }}
-  clusterIP: None
+    - protocol: TCP
+      name: rmngr
+      port: {{ .Values.service.port }}
+  {{- if and (eq .Values.service.type "LoadBalancer") (.Values.service.loadBalancerIP) }}
+  loadBalancerIP: {{ .Values.service.loadBalancerIP }}
+  {{- end }}
+  {{- if .Values.service.clusterIP }}
+  clusterIP: {{ .Values.service.clusterIP }}
+  {{- end }}
   selector:
-    app: server
+    {{- include "kubeonec.selectorLabels" . | nindent 4 }}
+
+{{- $fullname := include "kubeonec.fullname" . }}
+{{- $labels := include "kubeonec.labels" . }}
+{{- range until (int .Values.replicaCount) }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $fullname }}-{{ . }}
+  labels:
+    {{ $labels | nindent 4 }}
+  {{- with $.Values.service.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  ports:
+  {{- range untilStep (int $.Values.ports.workProccesStartPort) (int $.Values.workProccesEndPort) 1 }}  
+    - protocol: TCP
+      name: rphost-{{ . }}
+      port: {{ (int .) }}
+  {{- end }}
+    - protocol: TCP
+      name: ragent
+      port: {{ $.Values.ports.serverAgent }}
+    - protocol: TCP
+      name: rmngr
+      port: {{ $.Values.ports.clusterManagerPort }}
+    - name: ras
+      port: {{ $.Values.ports.rasPort }}
+  selector:
+    statefulset.kubernetes.io/pod-name: {{ $fullname }}-{{ . }}
+{{- end }}

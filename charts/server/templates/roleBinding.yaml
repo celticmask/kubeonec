@@ -12,4 +12,4 @@ roleRef:
 subjects:
 # You can specify more than one "subject"
   - kind: ServiceAccount
-    name: {{ include "kubeonec.fullname" . }}-sa # "name" is case sensitive
+    name: {{ include "kubeonec.serviceAccountName" . }}

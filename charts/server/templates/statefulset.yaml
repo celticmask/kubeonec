@@ -2,30 +2,23 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: {{ include "kubeonec.fullname" . }}-server
+  name: {{ include "kubeonec.fullname" . }}
   labels:
     version: " {{- .Values.image.tag }}"
-    app: server
+    {{- include "kubeonec.labels" . | nindent 4 }}
 spec:
-  serviceName: {{ include "kubeonec.fullname" . }}-service
+  serviceName: {{ include "kubeonec.fullname" . }}
   selector:
     matchLabels:
-      app: server
+      {{- include "kubeonec.selectorLabels" . | nindent 6 }}
   replicas: {{ .Values.replicaCount }}
   template:
     metadata:
       labels:
-        app: server
+        {{- include "kubeonec.selectorLabels" . | nindent 8 }}
     spec:
-      initContainers:
-        - name: volume-permissions
-          image: busybox:1.35.0
-          command: ["sh", "-c", "chmod a+wx /home /var/log/kubeonec || true"]
-          volumeMounts:
-            - name: {{ .Values.storage.volumeName }}
-              mountPath: /home
       {{- if .Values.serviceAccount.create}}
-      serviceAccount: {{ include "kubeonec.fullname" . }}-sa
+      serviceAccount: {{ include "kubeonec.serviceAccountName" . }}
       {{- end}}
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
@@ -40,16 +33,16 @@ spec:
         {{- end }}
         imagePullPolicy: Always
         ports:
-          - name: cluster
+          - name: rmngr
             containerPort: {{ .Values.ports.clusterManagerPort }}  
             protocol: TCP
-          {{- range untilStep (int .Values.ports.workProccesStartPort) (int .Values.workProccesEndPort) 1 }}  
-          - name: "wp-{{ . }}"
+          {{- range untilStep (int .Values.ports.workProccesStartPort) (int .Values.ports.workProccesEndPort) 1 }}  
+          - name: "rphost-{{ . }}"
             containerPort: {{ . }}
             protocol: TCP
           {{- end }}
-          - name: serveragent
-            containerPort: {{ .Values.ports.serveragent }}
+          - name: ragent
+            containerPort: {{ .Values.ports.serverAgent }}
             protocol: TCP
           - name: ras
             containerPort: {{ .Values.ports.rasPort }}
