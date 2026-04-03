@@ -22,15 +22,6 @@ spec:
       securityContext:
         {{- toYaml . | nindent 8 }}
       {{- end }}    
-      initContainers:
-        - name: volume-permissions
-          image: busybox:1.35.0
-          command: ["sh", "-c", "chmod a+wx /home /var/log/kubeonec || true"]
-          volumeMounts:
-            - name: {{ .Values.storage.volumeName }}
-              mountPath: /home
-      {{- if .Values.securityContext.enabled }}
-      {{- end }}
       {{- if .Values.serviceAccount.create}}
       serviceAccount: {{ include "kubeonec.serviceAccountName" . }}
       {{- end}}
