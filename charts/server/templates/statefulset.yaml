@@ -58,6 +58,7 @@ spec:
           - name: ras
             containerPort: {{ .Values.service.ports.rasPort }}
             protocol: TCP
+          {{- with .Values.resources }}
           resources:
             {{- toYaml . | nindent 12 }}
           {{- end }}
