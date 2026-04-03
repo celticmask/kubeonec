@@ -45,18 +45,18 @@ spec:
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         ports:
           - name: rmngr
-            containerPort: {{ .Values.ports.clusterManagerPort }}  
+            containerPort: {{ .Values.service.ports.clusterManagerPort }}  
             protocol: TCP
-          {{- range untilStep (int .Values.ports.workProccesStartPort) (int .Values.ports.workProccesEndPort) 1 }}  
+          {{- range untilStep (int .Values.service.ports.workProccesStartPort) (int .Values.service.ports.workProccesEndPort) 1 }}  
           - name: "rphost-{{ . }}"
             containerPort: {{ . }}
             protocol: TCP
           {{- end }}
           - name: ragent
-            containerPort: {{ .Values.ports.serverAgent }}
+            containerPort: {{ .Values.service.ports.serverAgent }}
             protocol: TCP
           - name: ras
-            containerPort: {{ .Values.ports.rasPort }}
+            containerPort: {{ .Values.service.ports.rasPort }}
             protocol: TCP
         volumeMounts:
         - name: {{ .Values.storage.volumeName }}

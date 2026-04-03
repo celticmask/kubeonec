@@ -12,7 +12,7 @@ spec:
   ports:
     - protocol: TCP
       name: rmngr
-      port: {{ .Values.service.port }}
+      port: {{ .Values.service.ports.clusterManagerPort }}
   {{- if and (eq .Values.service.type "LoadBalancer") (.Values.service.loadBalancerIP) }}
   loadBalancerIP: {{ .Values.service.loadBalancerIP }}
   {{- end }}
@@ -38,19 +38,19 @@ metadata:
   {{- end }}
 spec:
   ports:
-  {{- range untilStep (int $.Values.ports.workProccesStartPort) (int $.Values.ports.workProccesEndPort) 1 }}  
+  {{- range untilStep (int $.Values.service.ports.workProccesStartPort) (int $.Values.service.ports.workProccesEndPort) 1 }}  
     - protocol: TCP
       name: rphost-{{ . }}
       port: {{ (int .) }}
   {{- end }}
     - protocol: TCP
       name: ragent
-      port: {{ $.Values.ports.serverAgent }}
+      port: {{ $.Values.service.ports.serverAgent }}
     - protocol: TCP
       name: rmngr
-      port: {{ $.Values.ports.clusterManagerPort }}
+      port: {{ $.Values.service.ports.clusterManagerPort }}
     - name: ras
-      port: {{ $.Values.ports.rasPort }}
+      port: {{ $.Values.service.ports.rasPort }}
   selector:
     statefulset.kubernetes.io/pod-name: {{ $fullname }}-{{ . }}
 {{- end }}
