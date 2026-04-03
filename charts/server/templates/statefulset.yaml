@@ -58,6 +58,9 @@ spec:
           - name: ras
             containerPort: {{ .Values.service.ports.rasPort }}
             protocol: TCP
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
         volumeMounts:
         - name: {{ .Values.storage.volumeName }}
           mountPath: /home
