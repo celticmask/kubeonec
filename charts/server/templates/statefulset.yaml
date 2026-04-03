@@ -29,6 +29,13 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      initContainers:
+        - name: volume-permissions
+          image: busybox:1.35.0
+          command: ["sh", "-c", "chmod a+wx /home || true"]
+          volumeMounts:
+            - name: {{ .Values.storage.volumeName }}
+              mountPath: /home
       containers:
       - name: server
         {{- with .Values.securityContext }}
