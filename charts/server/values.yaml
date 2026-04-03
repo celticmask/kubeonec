@@ -73,11 +73,11 @@ podSecurityContext:
   supplementalGroups:
     - 999
 
-## Default security options to run PostgreSQL as non-root (usr1cv8 user), read only container without privilege escalation
+## Default security options to run PostgreSQL as non-root (usr1cv8 user), container without privilege escalation
 securityContext:
   allowPrivilegeEscalation: false
   privileged: false
-  readOnlyRootFilesystem: true
+  readOnlyRootFilesystem: false
   runAsNonRoot: true
   runAsGroup: 999
   runAsUser: 999
