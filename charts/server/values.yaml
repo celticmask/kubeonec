@@ -5,7 +5,6 @@
 image:
   repository: localhost/onec-server
   pullPolicy: IfNotPresent
-  # Overrides the image tag whose default is the chart appVersion.
   tag: 8.3.18.1363
 
 imagePullSecrets: []

@@ -57,9 +57,9 @@ spec:
             containerPort: {{ .Values.service.ports.rasPort }}
             protocol: TCP
           {{- with .Values.resources }}
-          resources:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
+        resources:
+          {{- toYaml . | nindent 12 }}
+        {{- end }}
         volumeMounts:
         - name: {{ .Values.storage.volumeName }}
           mountPath: /home
