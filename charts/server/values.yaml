@@ -68,7 +68,13 @@ resources: {}
   #   cpu: 100m
   #   memory: 128Mi
 
-## Pod-level security context
+## Pod security context uses file system group 999 (kubeonec-server)
+podSecurityContext:
+  fsGroup: 999
+  supplementalGroups:
+    - 999
+
+## Default security options to run PostgreSQL as non-root (usr1cv8 user), read only container without privilege escalation
 securityContext:
   allowPrivilegeEscalation: false
   privileged: false
