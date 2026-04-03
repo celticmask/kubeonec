@@ -70,7 +70,13 @@ resources: {}
 
 ## Pod-level security context
 securityContext:
-  enabled: true
-  fsGroup: 999
+  allowPrivilegeEscalation: false
+  privileged: false
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsGroup: 999
   runAsUser: 999
   fsGroupChangePolicy: OnRootMismatch
+  capabilities:
+    drop:
+      - ALL
