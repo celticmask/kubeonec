@@ -16,6 +16,7 @@ ARG ONEC_VERSION=8.3.27.1989
 ENV ONEC_DATA=/home/usr1cv8/srvinfo
 ENV LANG=ru_RU.UTF-8
 ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=Etc/UTC
 
 COPY --from=add-apt-repositories /etc/apt/sources.list /etc/apt/sources.list
 COPY --from=add-apt-repositories /etc/apt/sources.list.d /etc/apt/sources.list.d
@@ -50,7 +51,9 @@ RUN set -xe; \
     libxrender1 \
     libxfixes3 \
     libxslt1.1 \
-    geoclue-2.0; \
+    geoclue-2.0 \
+    tzdata \
+    libpng*; \
   rm -rf /var/lib/apt/lists/*
 
 COPY ./configs /opt/1cv8/conf

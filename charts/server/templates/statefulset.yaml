@@ -60,6 +60,9 @@ spec:
         resources:
           {{- toYaml . | nindent 12 }}
         {{- end }}
+        env:
+          - name: TZ
+            value: {{ .Values.tzdata | quote }}
         volumeMounts:
         - name: {{ .Values.storage.volumeName }}
           mountPath: /home
