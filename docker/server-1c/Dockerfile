@@ -53,8 +53,13 @@ RUN set -xe; \
     libxslt1.1 \
     geoclue-2.0 \
     tzdata \
+    wget \
     libpng*; \
   rm -rf /var/lib/apt/lists/*
+
+# Barcode component
+RUN wget https://snapshot.debian.org/archive/debian/20160413T160058Z/pool/main/libp/libpng/libpng12-0_1.2.54-6_amd64.deb; \
+    dpkg -i ./libpng12*
 
 COPY ./configs /opt/1cv8/conf
 COPY entrypoint.sh ./entrypoint.sh
