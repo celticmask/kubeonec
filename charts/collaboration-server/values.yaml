@@ -83,6 +83,25 @@ ingress:
   #    hosts:
   #      - chart-example.local
 
+# -- HTTPRoute configuration for Gateway API. See: https://gateway-api.sigs.k8s.io/
+httpRoute:
+  enabled: false
+  annotations: {}
+  # -- Gateway references to attach this HTTPRoute to
+  parentRefs: []
+    # - name: my-gateway
+    #   namespace: gateway-system
+    #   sectionName: https
+  # -- Hostnames to match for this HTTPRoute
+  hostnames: []
+    # - site.example.com
+  # -- Rules for routing traffic
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+
 ##
 ## PostgreSQL chart configuration
 ## for more options see https://github.com/groundhog2k/helm-charts/tree/master/charts/postgres
