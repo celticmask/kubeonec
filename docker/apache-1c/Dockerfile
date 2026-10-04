@@ -2,8 +2,8 @@ FROM ubuntu:22.04 AS add-apt-repositories
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN apt-get update; \
- apt-get install -y software-properties-common gnupg curl; \
+RUN apt-get update && \
+ apt-get install -y software-properties-common gnupg curl && \
  add-apt-repository -n -y "deb http://archive.ubuntu.com/ubuntu/ focal universe"
 
 ARG ONEC_VERSION=8.3.27.1989
@@ -13,14 +13,14 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 COPY ./setup-full-$ONEC_VERSION-x86_64.run .
 
-RUN set -xe; \
-  apt-get update; \
-  apt-get install -y --no-install-recommends locales; \
-  locale-gen ${LANG}; \
+RUN set -xe && \
+  apt-get update && \
+  apt-get install -y --no-install-recommends locales && \
+  locale-gen ${LANG} && \
   dpkg-reconfigure locales
 
 RUN set -xe; \
-  ./setup-full-$ONEC_VERSION-x86_64.run --mode unattended  --enable-components ws  --installer-language en; \
+  ./setup-full-$ONEC_VERSION-x86_64.run --mode unattended  --enable-components ws  --installer-language en && \
   rm -rf ./setup-full-*
 
 # Second stage 

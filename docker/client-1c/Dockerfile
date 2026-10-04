@@ -2,8 +2,8 @@ FROM ubuntu:22.04 AS add-apt-repositories
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN apt-get update; \
- apt-get install -y software-properties-common gnupg; \
+RUN apt-get update && \
+ apt-get install -y software-properties-common gnupg && \
  add-apt-repository -n -y "deb http://archive.ubuntu.com/ubuntu/ focal universe"
 
 COPY server64_*.tar.gz ./
@@ -20,10 +20,10 @@ COPY --from=add-apt-repositories /etc/apt/sources.list /etc/apt/sources.list
 COPY --from=add-apt-repositories /etc/apt/sources.list.d /etc/apt/sources.list.d
 COPY --from=add-apt-repositories ./setup-full-* ./
 
-RUN set -xe; \
-  apt-get update; \
-  apt-get install -y --no-install-recommends locales; \
-  locale-gen ${LANG}; \
+RUN set -xe && \
+  apt-get update && \
+  apt-get install -y --no-install-recommends locales && \
+  locale-gen ${LANG} && \
   dpkg-reconfigure locales
 
 
