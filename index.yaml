@@ -116,6 +116,21 @@ entries:
     version: 0.1.6
   collaboration-server:
   - apiVersion: v2
+    created: "2026-11-22T13:57:09.944700124Z"
+    dependencies:
+    - alias: postgresql
+      condition: postgresql.enabled
+      name: postgres
+      repository: https://groundhog2k.github.io/helm-charts
+      version: 1.6.1
+    description: A Helm chart 1C:Enterprise Collaboration server for Kubernetes
+    digest: 45b157a25f4b2270b3678f66ae4318d5e96e9be9793b040758623a608a9e6784
+    name: collaboration-server
+    type: application
+    urls:
+    - collaboration-server-1.3.2.tgz
+    version: 1.3.2
+  - apiVersion: v2
     created: "2026-11-22T13:48:26.94676146Z"
     dependencies:
     - alias: postgresql
@@ -481,4 +496,4 @@ entries:
     urls:
     - server-vm-0.1.0.tgz
     version: 0.1.0
-generated: "2026-11-22T13:48:26.946842279Z"
+generated: "2026-11-22T13:57:09.94475823Z"
