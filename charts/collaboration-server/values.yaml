@@ -124,7 +124,18 @@ postgresql:
   customScripts:
     uuid-extension.sql: |
       CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-        
+
+## External database settings (is used when postgres.enabled is false)
+externalDatabase:
+  ## Name of the database (default: cs)
+  name: cs
+  ## Database user
+  username:
+  ## Database password
+  password:
+  ## Database host
+  host:
+
 ## Resource limits and requests
 resources: {}
   # limits:
